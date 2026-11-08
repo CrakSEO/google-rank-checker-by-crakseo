@@ -1,0 +1,217 @@
+{
+  "version": "1.0.0",
+  "author": "CrakSEO",
+  "authorUrl": "https://github.com/CrakSEO",
+  "icon": "https://raw.githubusercontent.com/CrakSEO/crakseo-mcp-plugins/main/seo-tools-by-crakseo/assets/logo.png",
+  "identifier": "crakseo-rank-tracker",
+  "name": "Google Rank Checker: Keyword Rankings & Rank Tracking by CrakSEO",
+  "description": "Google rank checker for SEO: live keyword rankings and positions for any website, ranked keywords, ranking competitors and keyword gaps. On-demand rank tracking.",
+  "homepage": "https://crakseo.com/mcp/rank-tracker",
+  "cloudEndpoint": "https://crakseo.com/mcp/rank-tracker",
+  "tags": [
+    "rank-tracking",
+    "google-rankings",
+    "rank-checker"
+  ],
+  "tools": [
+    {
+      "name": "get_api_credit_balance",
+      "description": "Free: API credit balance, availability and pricing for SEO data calls. Call first to confirm the connection.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "check_google_rankings",
+      "description": "Check Google rankings: the live Google position and ranking URL of a domain for up to 10 keywords in one country, with the top competing domains. Costs API credits per keyword.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "domain": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 253,
+            "pattern": "^(https?:\\/\\/)?[A-Za-z0-9.-]+\\.[A-Za-z]{2,}(\\/.*)?$",
+            "description": "Domain or URL, for example example.com. Protocol and www are ignored."
+          },
+          "keywords": {
+            "minItems": 1,
+            "maxItems": 10,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200,
+              "description": "Search query exactly as a user would type it."
+            },
+            "description": "Up to 10 keywords to check, one live Google search each."
+          },
+          "country": {
+            "default": "US",
+            "description": "Two-letter country code of the search market, for example US, GB, DE or IN. Default US.",
+            "type": "string",
+            "pattern": "^[A-Za-z]{2}$"
+          },
+          "language": {
+            "default": "en",
+            "description": "Language code of the search market, for example en, de or pt-BR. Default en.",
+            "type": "string",
+            "pattern": "^[a-z]{2}(-[A-Za-z]{2,4})?$"
+          },
+          "location": {
+            "description": "Optional exact location name for city-level results, for example \"Austin,Texas,United States\". Overrides country.",
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 120
+          },
+          "device": {
+            "default": "desktop",
+            "description": "Device to emulate. Default desktop.",
+            "type": "string",
+            "enum": [
+              "desktop",
+              "mobile"
+            ]
+          },
+          "depth": {
+            "default": 30,
+            "description": "How deep to look for the domain, 10 to 100 results. Default 30.",
+            "type": "integer",
+            "minimum": 10,
+            "maximum": 100
+          }
+        },
+        "required": [
+          "domain",
+          "keywords"
+        ]
+      }
+    },
+    {
+      "name": "get_ranked_keywords",
+      "description": "Ranked keywords: every Google keyword a domain or URL ranks for in one country, with position, ranking URL, search volume, difficulty and estimated traffic, highest traffic first. Costs API credits per call.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "target": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 2048,
+            "description": "Domain (example.com) or full page URL (https://example.com/page) to analyze."
+          },
+          "country": {
+            "default": "US",
+            "description": "Two-letter country code of the search market, for example US, GB, DE or IN. Default US.",
+            "type": "string",
+            "pattern": "^[A-Za-z]{2}$"
+          },
+          "language": {
+            "default": "en",
+            "description": "Language code of the search market, for example en, de or pt-BR. Default en.",
+            "type": "string",
+            "pattern": "^[a-z]{2}(-[A-Za-z]{2,4})?$"
+          },
+          "limit": {
+            "default": 100,
+            "description": "How many keywords to return, 10 to 1000. Default 100.",
+            "type": "integer",
+            "minimum": 10,
+            "maximum": 1000
+          }
+        },
+        "required": [
+          "target"
+        ]
+      }
+    },
+    {
+      "name": "find_competitor_keywords",
+      "description": "Competitor keywords: keywords a competitor domain ranks for in Google that your domain does not, with search volume, difficulty and the competitor's position. Costs API credits per call.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "competitor": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 253,
+            "pattern": "^(https?:\\/\\/)?[A-Za-z0-9.-]+\\.[A-Za-z]{2,}(\\/.*)?$",
+            "description": "Competitor domain, for example competitor.com."
+          },
+          "yourDomain": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 253,
+            "pattern": "^(https?:\\/\\/)?[A-Za-z0-9.-]+\\.[A-Za-z]{2,}(\\/.*)?$",
+            "description": "Your domain, for example example.com."
+          },
+          "country": {
+            "default": "US",
+            "description": "Two-letter country code of the search market, for example US, GB, DE or IN. Default US.",
+            "type": "string",
+            "pattern": "^[A-Za-z]{2}$"
+          },
+          "language": {
+            "default": "en",
+            "description": "Language code of the search market, for example en, de or pt-BR. Default en.",
+            "type": "string",
+            "pattern": "^[a-z]{2}(-[A-Za-z]{2,4})?$"
+          },
+          "limit": {
+            "default": 100,
+            "description": "How many keywords to return, 10 to 1000. Default 100.",
+            "type": "integer",
+            "minimum": 10,
+            "maximum": 1000
+          }
+        },
+        "required": [
+          "competitor",
+          "yourDomain"
+        ]
+      }
+    },
+    {
+      "name": "find_competitor_domains",
+      "description": "Competitor domains: the domains competing with a domain in Google organic search, with shared keywords, average position and estimated traffic. Costs API credits per call.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "domain": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 253,
+            "pattern": "^(https?:\\/\\/)?[A-Za-z0-9.-]+\\.[A-Za-z]{2,}(\\/.*)?$",
+            "description": "Domain or URL, for example example.com. Protocol and www are ignored."
+          },
+          "country": {
+            "default": "US",
+            "description": "Two-letter country code of the search market, for example US, GB, DE or IN. Default US.",
+            "type": "string",
+            "pattern": "^[A-Za-z]{2}$"
+          },
+          "language": {
+            "default": "en",
+            "description": "Language code of the search market, for example en, de or pt-BR. Default en.",
+            "type": "string",
+            "pattern": "^[a-z]{2}(-[A-Za-z]{2,4})?$"
+          },
+          "limit": {
+            "default": 20,
+            "description": "How many competitors to return, 5 to 100. Default 20.",
+            "type": "integer",
+            "minimum": 5,
+            "maximum": 100
+          }
+        },
+        "required": [
+          "domain"
+        ]
+      }
+    }
+  ]
+}

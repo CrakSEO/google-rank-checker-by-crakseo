@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "crakseo-rank-tracker": {
+      "type": "http",
+      "url": "https://crakseo.com/mcp/rank-tracker"
+    }
+  }
+}
